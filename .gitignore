@@ -12,3 +12,6 @@
 *.log
 tmp/
 temp/
+
+# Playwright MCP
+.playwright-mcp-profile/
