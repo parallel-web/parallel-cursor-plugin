@@ -1,7 +1,7 @@
 {
   "name": "parallel",
   "displayName": "Parallel",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Web search, content extraction, deep research, and data enrichment powered by parallel-cli.",
   "author": {
     "name": "Parallel Web Systems",
