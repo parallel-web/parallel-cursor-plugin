@@ -1,34 +1,70 @@
-# Cursor plugin template
+# Parallel — Cursor Plugin
 
-Build and publish Cursor Marketplace plugins from a single repo.
+Web search, content extraction, deep research, and data enrichment powered by [parallel-cli](https://docs.parallel.ai/home).
 
-Two starter plugins are included:
+## Features
 
-- **starter-simple**: rules and skills only
-- **starter-advanced**: rules, skills, agents, commands, hooks, MCP, and scripts
+| Capability | Skill | Command |
+|---|---|---|
+| **Web Search** | `parallel-web-search` | `/parallel-search <query>` |
+| **Content Extraction** | `parallel-web-extract` | `/parallel-extract <url>` |
+| **Deep Research** | `parallel-deep-research` | `/parallel-research <topic>` |
+| **Data Enrichment** | `parallel-data-enrichment` | `/parallel-enrich <data>` |
 
-## Getting started
+Additional commands: `/parallel-setup`, `/parallel-status <run_id>`, `/parallel-result <run_id>`
 
-[Use this template](https://github.com/cursor/plugin-template/generate) to create a new repository, then customize:
+## Installation
 
-1. `.cursor-plugin/marketplace.json`: set marketplace `name`, `owner`, and `metadata`.
-2. `plugins/*/.cursor-plugin/plugin.json`: set `name` (lowercase kebab-case), `displayName`, `author`, `description`, `keywords`, `license`, and `version`.
-3. Replace placeholder rules, skills, agents, commands, hooks, scripts, and logos.
+1. Install the plugin in Cursor from the marketplace (or clone this repo into your plugins directory).
+2. Run `/parallel-setup` to install `parallel-cli` and authenticate.
 
-To add more plugins, see `docs/add-a-plugin.md`.
+### Manual CLI Setup
 
-## Single plugin vs multi-plugin
+```bash
+curl -fsSL https://parallel.ai/install.sh | bash
+parallel-cli login
+```
 
-This template defaults to **multi-plugin** (multiple plugins in one repo).
+Or via pipx:
 
-For a **single plugin**, move your plugin folder contents to the repository root, keep one `.cursor-plugin/plugin.json`, and remove `.cursor-plugin/marketplace.json`.
+```bash
+pipx install "parallel-web-tools[cli]"
+parallel-cli login
+```
 
-## Submission checklist
+## Quick Start
 
-- Each plugin has a valid `.cursor-plugin/plugin.json`.
-- Plugin names are unique, lowercase, and kebab-case.
-- `.cursor-plugin/marketplace.json` entries map to real plugin folders.
-- All frontmatter metadata is present in rule, skill, agent, and command files.
-- Logos are committed and referenced with relative paths.
-- `node scripts/validate-template.mjs` passes.
-- Repository link is ready for submission to the Cursor team (Slack or `kniparko@anysphere.com`).
+**Search the web:**
+```
+/parallel-search latest developments in AI chip manufacturing
+```
+
+**Extract a webpage:**
+```
+/parallel-extract https://example.com/article
+```
+
+**Deep research (slower, more thorough):**
+```
+/parallel-research comprehensive analysis of React vs Vue in 2026
+```
+
+**Enrich data:**
+```
+/parallel-enrich companies.csv with CEO name, funding amount, and headquarters
+```
+
+## Plugin Structure
+
+```
+.cursor-plugin/plugin.json   Plugin manifest
+skills/                       4 skills (auto-discovered)
+commands/                     7 slash commands (auto-discovered)
+agents/                       1 subagent (auto-discovered)
+rules/                        Citation standards rule
+assets/                       Logo
+```
+
+## License
+
+MIT — see [LICENSE](LICENSE).
