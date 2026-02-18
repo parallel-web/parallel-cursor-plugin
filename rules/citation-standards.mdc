@@ -1,0 +1,33 @@
+---
+description: Citation standards for web search results. Applied when presenting search findings.
+alwaysApply: false
+---
+
+# Citation Standards
+
+When presenting information from web search results:
+
+## Inline Citations
+
+- **Every claim must have an inline citation** using markdown links: [Source Title](URL)
+- Only cite URLs that appear in the search output — never invent or guess URLs
+- Do not leave any factual claim uncited
+
+## Response Structure
+
+- Lead with the key answer or finding
+- Include specific facts, names, numbers, and dates
+- Cite every fact inline as [Source Title](url)
+- Organize by theme if covering multiple topics
+
+## Sources Section
+
+**End every search response with a Sources section** listing all referenced URLs:
+
+```
+Sources:
+- [Source Title](https://example.com/article) (Feb 2026)
+- [Another Source](https://example.com/other) (Jan 2026)
+```
+
+This Sources section is mandatory. Do not omit it.

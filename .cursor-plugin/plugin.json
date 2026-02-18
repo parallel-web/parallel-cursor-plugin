@@ -1,0 +1,26 @@
+{
+  "name": "parallel",
+  "displayName": "Parallel",
+  "version": "0.1.0",
+  "description": "Web search, content extraction, deep research, and data enrichment powered by parallel-cli.",
+  "author": {
+    "name": "Parallel Web Systems",
+    "email": "support@parallel.ai"
+  },
+  "homepage": "https://docs.parallel.ai/home",
+  "repository": "https://github.com/parallel-web/parallel-cursor-plugin",
+  "license": "MIT",
+  "logo": "https://assets.parallel.ai/white-parallel-avatar-270.svg",
+  "keywords": ["web-search", "research", "data-enrichment", "content-extraction", "parallel", "parallel-cli"],
+  "skills": "./skills/",
+  "rules": "./rules/",
+  "commands": [
+    "commands/parallel-setup.md",
+    "commands/parallel-search.md",
+    "commands/parallel-extract.md",
+    "commands/parallel-research.md",
+    "commands/parallel-enrich.md",
+    "commands/parallel-status.md",
+    "commands/parallel-result.md"
+  ]
+}
