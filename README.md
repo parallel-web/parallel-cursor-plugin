@@ -86,7 +86,6 @@ To test the plugin locally without installing from the marketplace:
 skills/                       4 skills (auto-discovered)
 commands/                     7 slash commands
 rules/                        Citation standards rule
-assets/                       Logo
 ```
 
 ## License
