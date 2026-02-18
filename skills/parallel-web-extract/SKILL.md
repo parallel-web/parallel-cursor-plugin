@@ -32,6 +32,10 @@ Then the extracted content verbatim, with these rules:
 - Strip only obvious noise: nav menus, footers, ads
 - Preserve all facts, names, numbers, dates, quotes
 
-## Setup
+## If `parallel-cli` is not found
 
-If `parallel-cli` is not found, tell the user to run `/parallel-setup` to install and authenticate.
+If the command fails with "command not found", **stop immediately**. Do NOT fetch the URL yourself, do NOT use any built-in fetch tools, and do NOT try to summarize the page from your own knowledge. Instead, tell the user:
+
+1. `parallel-cli` is not installed
+2. Run `/parallel-setup` to install it
+3. Then retry their extraction

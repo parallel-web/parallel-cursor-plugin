@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title desc">
+  <title id="title">Parallel</title>
+  <desc id="desc">Three parallel bars representing the Parallel brand.</desc>
+  <rect width="128" height="128" rx="20" fill="#0F172A" />
+  <rect x="30" y="32" width="12" height="64" rx="6" fill="#3B82F6" />
+  <rect x="58" y="32" width="12" height="64" rx="6" fill="#3B82F6" />
+  <rect x="86" y="32" width="12" height="64" rx="6" fill="#3B82F6" />
+</svg>

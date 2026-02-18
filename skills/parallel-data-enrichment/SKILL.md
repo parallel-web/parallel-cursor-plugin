@@ -65,6 +65,10 @@ Enrichment of large datasets can take longer than 9 minutes. If the poll exits w
 
 Do NOT re-share the monitoring URL after completion — the results are in the output file.
 
-## Setup
+## If `parallel-cli` is not found
 
-If `parallel-cli` is not found, tell the user to run `/parallel-setup` to install and authenticate.
+If the command fails with "command not found", **stop immediately**. Do NOT attempt to enrich the data yourself or use any other tools. Instead, tell the user:
+
+1. `parallel-cli` is not installed
+2. Run `/parallel-setup` to install it
+3. Then retry their enrichment
