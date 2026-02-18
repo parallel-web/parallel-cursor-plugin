@@ -60,7 +60,6 @@ parallel-cli login
 .cursor-plugin/plugin.json   Plugin manifest
 skills/                       4 skills (auto-discovered)
 commands/                     7 slash commands (auto-discovered)
-agents/                       1 subagent (auto-discovered)
 rules/                        Citation standards rule
 assets/                       Logo
 ```

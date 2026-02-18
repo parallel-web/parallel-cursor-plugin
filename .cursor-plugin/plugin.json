@@ -14,7 +14,6 @@
   "keywords": ["web-search", "research", "data-enrichment", "content-extraction", "parallel", "parallel-cli"],
   "skills": "./skills/",
   "rules": "./rules/",
-  "agents": "./agents/",
   "commands": [
     "commands/parallel-setup.md",
     "commands/parallel-search.md",
