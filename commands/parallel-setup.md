@@ -13,24 +13,45 @@ parallel-cli --version
 
 If this prints a version, skip to **Step 2: Authenticate**.
 
-## Step 1b: Install CLI (requires user's terminal)
+## Step 1b: Attempt installation
 
-The CLI cannot be installed from within Cursor's sandbox. Tell the user to run one of these commands in their own terminal:
+Try installing with the install script:
 
-**Option A — install script:**
+```bash
+curl -fsSL https://parallel.ai/install.sh | bash
+```
+
+If that fails, try pipx:
+
+```bash
+pipx install "parallel-web-tools[cli]"
+pipx ensurepath
+```
+
+After either install method, verify it worked:
+
+```bash
+parallel-cli --version
+```
+
+### If installation fails
+
+Tell the user to re-run `/parallel-setup` with sandbox mode disabled. Installation requires network and filesystem access that Cursor's sandbox may block.
+
+Alternatively, they can install manually in their own terminal:
+
 ```
 curl -fsSL https://parallel.ai/install.sh | bash
 ```
 
-**Option B — pipx:**
+or:
+
 ```
 pipx install "parallel-web-tools[cli]"
 pipx ensurepath
 ```
 
-After installing, they may need to add `~/.local/bin` to PATH in their shell config (e.g. `~/.zshrc`).
-
-Do NOT attempt to run the install commands here. Wait for the user to confirm they've installed it, then re-run `/parallel-setup` to verify.
+They may need to add `~/.local/bin` to PATH in their shell config (e.g. `~/.zshrc`). Ask them to re-run `/parallel-setup` once installed.
 
 ## Step 2: Authenticate
 

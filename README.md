@@ -15,7 +15,7 @@ Additional commands: `/parallel-setup`, `/parallel-status <run_id>`, `/parallel-
 
 ## Installation
 
-1. Install the plugin in Cursor from the marketplace (or clone this repo into your plugins directory).
+1. Install the plugin in Cursor from the marketplace (or see [Local Development](#local-development) to test from source).
 2. Run `/parallel-setup` to install `parallel-cli` and authenticate.
 
 ### Manual CLI Setup
@@ -54,14 +54,38 @@ parallel-cli login
 /parallel-enrich companies.csv with CEO name, funding amount, and headquarters
 ```
 
+## Local Development
+
+To test the plugin locally without installing from the marketplace:
+
+1. Clone this repo:
+   ```bash
+   git clone https://github.com/parallel-web/parallel-cursor-plugin.git
+   ```
+
+2. Open the repo in Cursor:
+   ```bash
+   cursor parallel-cursor-plugin
+   ```
+
+3. Skills and rules are auto-discovered from the standard directories. Type `/` in the chat to verify the `parallel-*` skills are listed.
+
+4. Commands are **not** auto-discovered when testing locally. Symlink them into Cursor's project commands directory:
+   ```bash
+   ln -s ../commands .cursor/commands
+   ```
+
+5. Type `/` again — the `parallel-*` commands should now appear alongside the skills.
+
+6. Run `/parallel-setup` to confirm the CLI is installed and authenticated.
+
 ## Plugin Structure
 
 ```
 .cursor-plugin/plugin.json   Plugin manifest
 skills/                       4 skills (auto-discovered)
-commands/                     7 slash commands (auto-discovered)
+commands/                     7 slash commands
 rules/                        Citation standards rule
-assets/                       Logo
 ```
 
 ## License

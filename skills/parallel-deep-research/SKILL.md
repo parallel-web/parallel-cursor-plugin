@@ -74,6 +74,10 @@ Do NOT re-share the monitoring URL after completion — the results are in the f
 
 Ask the user if they would like to read through the files for more detail. Do NOT read the file contents into context unless the user asks.
 
-## Setup
+## If `parallel-cli` is not found
 
-If `parallel-cli` is not found, tell the user to run `/parallel-setup` to install and authenticate.
+If the command fails with "command not found", **stop immediately**. Do NOT research the topic yourself, do NOT use any built-in search tools, and do NOT try to answer from your own knowledge. Instead, tell the user:
+
+1. `parallel-cli` is not installed
+2. Run `/parallel-setup` to install it
+3. Then retry their research

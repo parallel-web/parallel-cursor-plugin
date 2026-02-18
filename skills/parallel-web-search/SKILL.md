@@ -53,6 +53,10 @@ This Sources section is mandatory. Do not omit it.
 
 After the Sources section, mention the output file path (`$FILENAME.json`) so the user knows it's available for follow-up questions.
 
-## Setup
+## If `parallel-cli` is not found
 
-If `parallel-cli` is not found, tell the user to run `/parallel-setup` to install and authenticate.
+If the command fails with "command not found", **stop immediately**. Do NOT search the web yourself, do NOT use any built-in search tools, and do NOT try to answer the query from your own knowledge. Instead, tell the user:
+
+1. `parallel-cli` is not installed
+2. Run `/parallel-setup` to install it
+3. Then retry their search
