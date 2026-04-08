@@ -2,7 +2,7 @@
   "name": "parallel",
   "displayName": "Parallel",
   "version": "0.1.2",
-  "description": "Web search, content extraction, deep research, and data enrichment powered by parallel-cli.",
+  "description": "USER LEVEL: You pull live web data into context—search, extract a URL, or enrich a CSV—without writing fetch scripts or opening a browser. PROJECT LEVEL: Agents cite real sources and enrich project data in bulk, keeping generated content grounded and traceable. parallel-cli for web search, single-URL extraction, bulk enrichment, and deep research—turn live pages into structured, citation-friendly context. BEST SUITED FOR: • Data enrichment workflows (companies, contacts, products) • Research tasks that synthesize information from many sources • Agent pipelines needing structured web content as input",
   "author": {
     "name": "Parallel Web Systems",
     "email": "support@parallel.ai"
@@ -11,7 +11,14 @@
   "repository": "https://github.com/parallel-web/parallel-cursor-plugin",
   "license": "MIT",
   "logo": "https://assets.parallel.ai/white-parallel-avatar-270.svg",
-  "keywords": ["web-search", "research", "data-enrichment", "content-extraction", "parallel", "parallel-cli"],
+  "keywords": [
+    "web-search",
+    "research",
+    "data-enrichment",
+    "content-extraction",
+    "parallel",
+    "parallel-cli"
+  ],
   "skills": "./skills/",
   "rules": "./rules/",
   "commands": [
