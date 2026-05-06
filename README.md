@@ -10,6 +10,8 @@ Web search, content extraction, deep research, and data enrichment powered by [p
 | **Content Extraction** | `parallel-web-extract` | `/parallel-extract <url>` |
 | **Deep Research** | `parallel-deep-research` | `/parallel-research <topic>` |
 | **Data Enrichment** | `parallel-data-enrichment` | `/parallel-enrich <data>` |
+| **Entity Discovery** | `parallel-findall` | `/parallel-findall <objective>` |
+| **Web Monitoring** | `parallel-monitor` | `/parallel-monitor <action>` |
 
 Additional commands: `/parallel-setup`, `/parallel-status <run_id>`, `/parallel-result <run_id>`
 
