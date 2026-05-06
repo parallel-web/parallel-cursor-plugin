@@ -93,9 +93,9 @@ Tell the user:
     The schema is a JSON Schema-style object with `properties` mapping field names → `{type, description?}`.
   - Get more matches: `parallel-cli findall extend $FINDALL_ID 50`
 
-## If `parallel-cli` is not found
+## If the `parallel-cli` binary is not installed
 
-If the command fails with "command not found", **stop immediately**. Do NOT search the web yourself, do NOT use any built-in search tools, and do NOT try to answer the query from your own knowledge. Instead, tell the user:
+If the shell reports `command not found: parallel-cli` (i.e. the binary itself is missing — distinct from a `No such command` error from a stale CLI, which the in-body guidance above covers), **stop immediately**. Do NOT search the web yourself, do NOT use any built-in search tools, and do NOT try to answer the query from your own knowledge. Instead, tell the user:
 
 1. `parallel-cli` is not installed
 2. Run `/parallel-setup` to install it
