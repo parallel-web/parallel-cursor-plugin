@@ -24,10 +24,12 @@ When presenting information from web search results:
 
 **End every search response with a Sources section** listing all referenced URLs:
 
-```
+```text
 Sources:
 - [Source Title](https://example.com/article) (Feb 2026)
 - [Another Source](https://example.com/other) (Jan 2026)
 ```
 
 This Sources section is mandatory. Do not omit it.
+
+Include source dates only when returned or verified in retrieved content. Omit unknown dates rather than guessing them.
