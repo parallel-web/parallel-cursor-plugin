@@ -1,7 +1,7 @@
 ---
 name: parallel-findall
 description: "Discover entities (companies, people, products, etc.) matching a natural-language description. Use when the user asks to 'find all X' or 'list every Y that…' — e.g., 'Find AI startups that raised Series A in 2026', 'List roofing companies in Charlotte NC', 'Show me YC W24 dev tools companies'. Different from web-search (which returns webpages) and deep-research (which returns a narrative report). Use this when the user wants a structured list of entities."
-compatibility: Requires parallel-cli >= 0.3.0 and internet access.
+compatibility: Requires parallel-cli >= 0.6.0 and internet access.
 allowed-tools: Bash(parallel-cli:*)
 metadata:
   author: parallel
@@ -11,92 +11,109 @@ metadata:
 
 Find: $ARGUMENTS
 
-> Requires `parallel-cli` ≥ 0.3.0 (the `findall` command was added in 0.3.0). If `parallel-cli findall` errors with `no such command` or similar, tell the user to run `parallel-cli update` (or `pipx upgrade parallel-web-tools` if installed via pipx), then retry.
+> Full FindAll requires `parallel-cli` ≥ 0.3.0; the optional `entity-search` path requires ≥ 0.6.0. If a documented command or option is missing, update through the installation method used for this CLI, then retry. See <https://docs.parallel.ai/integrations/cli>.
 
 ## When to use this skill
 
-Use FindAll when the user wants a **structured list of entities** matching a description, not webpages or a narrative answer.
+Use FindAll for a structured list of entities matching a description. Use parallel-web-search for webpages or quick answers, parallel-deep-research for narrative analysis, and parallel-data-enrichment to add fields to a list the user already has.
 
-| User asks for… | Use |
-|---|---|
-| "Find all X that…" / "List every Y…" | **parallel-findall** (this skill) |
-| Webpage results / quick answers / current info | parallel-web-search |
-| Narrative report / analysis / "research X" | parallel-deep-research |
-| Add fields to a list you already have | parallel-data-enrichment |
+Default to the comprehensive, asynchronous `findall run`. It supports match conditions, exclusions, enrichment, evidence, and entity types beyond companies and people. “Find all” does not guarantee exhaustive internet coverage.
 
-If the user already has a list and just wants to add fields, this is the wrong skill — use parallel-data-enrichment.
+Use the synchronous `entity-search` path only when the user explicitly wants a quick or rough list of companies or people and accepts results without individual verification. Do not choose it just because the entity type is supported. It has no exclusions, generator selection, enrichment, or FindAll condition/enrichment citations.
 
-## Step 1: Start the run
+## Step 1: Start and retain the run
+
+Choose an unused, descriptive, run-specific `$FILENAME` for the saved JSON files. Pass the user's objective as one quoted argument, without shell evaluation.
 
 ```bash
-parallel-cli findall run "$ARGUMENTS" --no-wait --json
+parallel-cli findall run "$ARGUMENTS" --no-wait --json -o "/tmp/$FILENAME-create.json"
 ```
 
-Defaults: generator `core`, match limit `10`. Stick with `core` unless the user has a reason to escalate:
-- `-g pro` — most thorough generator (slower, costlier). Use when the user asks for "comprehensive" coverage or matches are sparse on `core`
-- `-g base` — fastest, but **markedly lower quality**. Often returns query-echo entities (e.g., directory pages, the literal query string), entries with no URL, or category placeholders. Only use if the user explicitly asks for a quick scan and accepts noise; otherwise prefer `core`
-- `-n 50` — return up to 50 matched entities (5–1000 allowed)
+Defaults are generator `core` and match limit `10`. Use `-n 50` for up to 50 matched entities; the allowed limit is 5–1000. Stay with `core` unless the user requests a different tradeoff. `pro` searches a larger pool and is slower/costlier; `base` is a faster, lower-quality option for an explicitly requested rough scan. Spot-check specific claims such as batch, year, and geography against available evidence, especially for `base`.
 
-If the user wants to exclude known entities (e.g., "find competitors but not Google or OpenAI"):
+For requested exclusions:
 
 ```bash
 parallel-cli findall run "$ARGUMENTS" --no-wait --json \
-    --exclude '[{"name":"Google","url":"google.com"},{"name":"OpenAI","url":"openai.com"}]'
+    --exclude '[{"name":"Google","url":"google.com"},{"name":"OpenAI","url":"openai.com"}]' \
+    -o "/tmp/$FILENAME-create.json"
 ```
 
-Tip — preview the schema first if the objective is ambiguous: `parallel-cli findall ingest "$ARGUMENTS" --json` shows the entity type and match conditions the API inferred, so you can refine wording before paying for a run.
+If the objective needs clarification, `parallel-cli findall ingest "$ARGUMENTS" --json` previews the inferred entity type, conditions, and suggested enrichments. This calls the API; it is not an offline or free test. Refine the objective before creating the run if the inferred conditions differ from the user's intent.
 
-Parse the JSON output to extract the `findall_id` and any monitoring URL. Tell the user:
-- A FindAll run has been started
-- Approximate cadence (minutes for `core`, longer for `pro`)
-- They can keep working while it runs
+Capture the returned `findall_id` immediately, along with the objective, generator, match limit and exclusions. Report that the run started and give a monitoring URL only if one was actually returned. Do not infer a URL or a guaranteed completion time. If the creation response is lost, resolve the existing job before submitting again.
 
-## Step 2: Poll for results
+## Step 2: Add requested fields explicitly
 
-Choose a descriptive filename (e.g., `series-a-ai-2026`, `charlotte-roofers`). Use lowercase with hyphens, no spaces.
+`--no-wait` ingests and creates the run but does **not** apply suggested enrichments. Requested output fields such as CEO name or employee count need a separate enrichment request; mentioning them in the objective is insufficient.
 
 ```bash
-parallel-cli findall poll "$FINDALL_ID" -o "/tmp/$FILENAME.json" --timeout 540
+parallel-cli findall enrich "$FINDALL_ID" \
+    '{"type":"object","properties":{"ceo":{"type":"string","description":"CEO name"},"employee_count":{"type":"number","description":"Number of employees"}}}' \
+    -p core --json
 ```
 
-Important:
-- Use `--timeout 540` (9 minutes) to stay within tool execution limits
-- Do NOT pass `--json` for large result sets — it will flood context. `-o` saves the full results to disk
+Use a JSON Schema object describing the user's fields, not the complete ingest envelope. Retain the exact submitted schema and processor locally with the run ID, including multiple requests if used. Do not rely on schema summaries to reconstruct them later. Enrichment adds non-boolean output data; it does not change match conditions.
 
-### If the poll times out
+Enrichment can be added while the run is active or after completion. A terminal run can requeue to process the fields. Creation, enrichment acceptance, and populated results are separate outcomes. Do not claim the fields are ready from the enrichment response or a completed poll alone.
 
-Re-run the same `parallel-cli findall poll` command to continue waiting. Server-side the run continues regardless.
+## Step 3: Check status and retrieve results
 
-## Response format
+```bash
+parallel-cli findall status "$FINDALL_ID" --json
+parallel-cli findall poll "$FINDALL_ID" -o "/tmp/$FILENAME.json" --timeout 60
+parallel-cli findall result "$FINDALL_ID" -o "/tmp/$FILENAME-snapshot.json"
+```
 
-Before presenting matches, **filter the results** for obvious noise:
-- Drop entries with empty/missing `url`
-- Drop entries whose `name` echoes the user's query (e.g., literal "YC W25 batch companies in developer tools") — those are search-result placeholders, not real entities
-- Drop entries whose `url` is a third-party directory or profile page rather than the entity's own domain. Concretely: drop URLs on `linkedin.com`, `ycombinator.com/companies/...`, `crunchbase.com`, `pitchbook.com`, generic news/blog posts about the entity, etc. The URL should be something the entity itself owns (its product site, docs, or marketing site)
+Use bounded waits. A timeout (exit 5) or interrupt is local wait exhaustion, not cancellation. Check status and resume the same ID while it is active, within the user's waiting window; do not submit another run. The shared poller does not recognize the compatibility status `action_required`. If that status, `failed`, `cancelled`, or an inactive unfinished state appears, stop automatic waiting and report the state and saved ID as needing attention.
 
-If filtering removes a meaningful share of matches, mention this to the user and suggest re-running with `-g pro` or a higher `-n`.
+`result` returns a snapshot and does not prove completion. Read `status` and `is_active` together. After enrichment, inspect each matched candidate's `output` for every requested field. If fields are missing, take further result snapshots within a bounded waiting window, even if the first poll said completed. Report missing, null, or failed values rather than inventing them; if the window expires, return partial results and the ID for resumption. An empty matched set is not proof of successful enrichment.
 
-**Sanity-check `-g base` results.** The base generator can hallucinate categorical attributes (e.g., return a YC S22 company as a YC W25 match). The filter rules above only catch URL/name shape, not factual correctness. If the user's query has a falsifiable attribute (a specific batch, year, geography, etc.), spot-check the kept entries against the source URL and flag any that don't fit. Recommend re-running with `-g core` (or higher) if **either** multiple kept entries fail the spot-check **or** noise filtering dropped a meaningful share of the matched set (say, ≥40%) — both indicate `base` isn't producing reliable results for this query.
+Avoid `--json` for large result sets; `-o` retains the complete JSON. These commands can overwrite their selected files, so use paths belonging to this run. Preserve the raw candidate list and status. `/tmp` is temporary; copy requested deliverables to a persistent user location when needed.
 
-Present the remaining (real) entities as a markdown table or list. Lead with the count, then list each entity with its name, URL, and a one-line description if available. Cite each entity with its source URL.
+## Present matches and evidence
 
-Tell the user:
-- How many entities were matched (and how many were filtered as noise, if any)
-- The full results path (`/tmp/$FILENAME.json`)
-- That they can:
-  - Add fields to these results, e.g.:
+Present only candidates with `match_status: "matched"` as matches. Preserve generated, unmatched, and discarded candidates in the raw file. Review obvious query-echo placeholders and unsupported entries rather than treating every candidate as an entity.
 
-    ```bash
-    parallel-cli findall enrich $FINDALL_ID '{"properties":{"ceo":{"type":"string"},"employee_count":{"type":"number"}}}'
-    ```
+Review URLs in the context of the entity. LinkedIn profiles can legitimately identify people, and YC or Crunchbase profiles can identify companies. Do not discard these solely because the entity does not own the domain. Flag missing or unverifiable URLs and use available evidence to resolve uncertainty.
 
-    The schema is a JSON Schema-style object with `properties` mapping field names → `{type, description?}`.
-  - Get more matches: `parallel-cli findall extend $FINDALL_ID 50`
+Use condition and enrichment basis for factual claims, with its source URLs. The entity's primary URL and a supporting citation may differ. Do not label a primary/profile URL as evidence for an attribute unless it supports the claim.
+
+Lead with the number of matched entities presented, note exclusions or unresolved entries, and use a table or list with names, URLs, and requested fields. Include the saved raw-results path, run ID, current state, and any incomplete fields. Sparse or noisy results can warrant suggesting a revised objective or generator; do not automatically create a replacement paid run.
+
+## Get more matches
+
+Extend only when the user requests additional matches:
+
+```bash
+parallel-cli findall schema "$FINDALL_ID" --json
+parallel-cli findall extend "$FINDALL_ID" 50 --json
+```
+
+`50` is an increment, not the new total. Check the known creation limit or current schema, including prior extensions, so the resulting total stays at or below 1000. Preview runs cannot be extended. A completed run is eligible only if its termination reason was `match_limit_met`; status/result in the CLI omit that reason and cannot prove eligibility. For an explicitly requested extension within the limit, let the API validate eligibility and surface any rejection without creating a new run automatically.
+
+Retain the updated limit and poll the same ID for new results. Recheck requested enrichment fields; if the existing enrichment must be reapplied, use the original retained request payload and processor within the user's authorized scope.
+
+## Fast entity search
+
+Use only for explicit speed/rough-list intent and entity type `companies` or `people`. It is synchronous and returns `entity_set_id` plus ranked `entities`, not `findall_id` or verified candidates.
+
+```bash
+parallel-cli findall entity-search "$ARGUMENTS" -t companies -n 10 -o "/tmp/$FILENAME.json"
+```
+
+The `-n` limit is 5–1000, default 10. Choose a limit proportional to the user's request. Avoid highly restrictive criteria on this path: relevance can decline toward the tail. Use full FindAll when individual condition checks or enrichment are required.
+
+Keep legitimate directory/profile links and review empty URLs or query-echo names. Present these as unverified leads, cite their links as links to the entities, and avoid attributing absent FindAll basis or verification to them. Report the saved path and returned count. Never pass an `entity_set_id` to FindAll poll/status/result/enrich/extend. If the user later requests those capabilities, explain that a separate full run is needed and retain the original quick results.
 
 ## If the `parallel-cli` binary is not installed
 
-If the shell reports `command not found: parallel-cli` (i.e. the binary itself is missing — distinct from a `No such command` error from a stale CLI, which the in-body guidance above covers), **stop immediately**. Do NOT search the web yourself, do NOT use any built-in search tools, and do NOT try to answer the query from your own knowledge. Instead, tell the user:
+If the shell reports `command not found: parallel-cli`, stop and tell the user to run `/parallel-setup`, then retry their request. Do not substitute built-in search, another provider or an answer from memory.
 
-1. `parallel-cli` is not installed
-2. Run `/parallel-setup` to install it
-3. Then retry their request
+### Command and authentication failures
+
+`No such command`, `No such option` or `unrecognized arguments` from an installed CLI indicate a stale or mismatched interface. Check its version and upgrade through its installation method using `/parallel-setup`; `parallel-cli update` is for standalone installs only. Verify the required command in the same Cursor terminal before retrying.
+
+For authentication errors, run `parallel-cli auth --json` and inspect `authenticated`; exit zero alone does not prove authentication. Use `/parallel-setup` for terminal login or environment-key guidance, without requesting credentials in chat. A `403` can be an authorization or billing error: report the actual error and do not assume insufficient balance or add funds automatically.
+
+For other API/input errors, report the error without calling it a version problem. Reuse saved run IDs to resume asynchronous work. After an ambiguous creation failure, resolve whether a job exists before retrying creation.
