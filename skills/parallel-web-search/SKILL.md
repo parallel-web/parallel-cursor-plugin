@@ -1,6 +1,6 @@
 ---
 name: parallel-web-search
-description: "Web search with the Parallel MCP or CLI, the default for lookups, current information and research queries. Cite retrieved sources. Only use parallel-deep-research when the user explicitly requests deep or exhaustive research."
+description: "Web search, the default for lookups, current information and research queries. Cite retrieved sources. Only use parallel-deep-research when the user explicitly requests deep or exhaustive research."
 compatibility: Requires the Parallel MCP or parallel-cli, and internet access.
 allowed-tools: Bash(parallel-cli:*)
 metadata:
@@ -11,7 +11,7 @@ metadata:
 
 Search the web for: $ARGUMENTS
 
-If the Parallel MCP `web_search` tool is callable (its name may have a prefix), call it and do not run or install the CLI. Use the CLI steps below only when it is not callable.
+If the Parallel MCP `web_search` tool is callable (its name may have a prefix), use it instead of the CLI steps below.
 
 ## Command
 

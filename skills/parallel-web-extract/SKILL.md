@@ -1,6 +1,6 @@
 ---
 name: parallel-web-extract
-description: "Content extraction from one or more URLs, including webpages, articles and PDFs, with the Parallel MCP or CLI. Preserve successful content and report per-URL failures."
+description: "Content extraction from one or more URLs, including webpages, articles and PDFs. Preserve successful content and report per-URL failures."
 compatibility: Requires the Parallel MCP or parallel-cli, and internet access.
 allowed-tools: Bash(parallel-cli:*)
 metadata:
@@ -11,7 +11,7 @@ metadata:
 
 Extract content from: $ARGUMENTS
 
-If the Parallel MCP `web_fetch` tool is callable (its name may have a prefix), call it and do not run or install the CLI. Use the CLI steps below only when it is not callable.
+If the Parallel MCP `web_fetch` tool is callable (its name may have a prefix), use it instead of the CLI steps below.
 
 ## Command
 
