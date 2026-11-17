@@ -1,6 +1,6 @@
 {
   "mcpServers": {
-    "parallel-search": {
+    "parallel": {
       "url": "https://mcp.parallel.ai/mcp"
     }
   }

@@ -1,11 +1,11 @@
 ---
 name: parallel-setup
-description: Set up the Parallel CLI for the plugin's CLI workflows
+description: Check the bundled Parallel MCP, then set up the Parallel CLI for CLI workflows
 ---
 
 # Parallel CLI Setup
 
-The bundled Parallel MCP can search the web, fetch pages and check claims with Decisions without a CLI install or sign-in. Use the steps below to set up the CLI for slash commands and CLI workflows.
+First check whether Parallel MCP tools such as `web_search` are callable. If they are, web search, page fetch and Decisions are ready without a CLI install or sign-in. If they are not, ask the user to enable the bundled `parallel` server in Cursor's MCP settings. Continue with the steps below only when the user wants CLI workflows: deep research, enrichment, FindAll or monitors.
 
 ## Check the CLI in Cursor's terminal
 
