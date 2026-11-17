@@ -1,9 +1,11 @@
 ---
 name: parallel-setup
-description: Set up the Parallel plugin (install CLI and authenticate)
+description: Set up the Parallel CLI for the plugin's CLI workflows
 ---
 
-# Parallel Plugin Setup
+# Parallel CLI Setup
+
+The bundled Parallel MCP can search the web, fetch pages and check claims with Decisions without a CLI install or sign-in. Use the steps below to set up the CLI for slash commands and CLI workflows.
 
 ## Check the CLI in Cursor's terminal
 
