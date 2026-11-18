@@ -1,11 +1,11 @@
 ---
 name: parallel-setup
-description: Set up the Parallel CLI for the plugin's CLI workflows
+description: Check the Parallel MCP and set up the CLI
 ---
 
 # Parallel CLI Setup
 
-The bundled Parallel MCP can search the web, fetch pages and check claims with Decisions without a CLI install or sign-in. Use the steps below to set up the CLI for slash commands and CLI workflows.
+If Parallel MCP tools such as `web_search` are callable, search, fetch and Decisions are ready. If not, run `agent mcp enable parallel` in the terminal. If that fails or the tools still aren't callable, ask the user to enable the bundled `parallel` server in Cursor's MCP settings. Continue below only for CLI workflows: deep research, enrichment, FindAll or monitors.
 
 ## Check the CLI in Cursor's terminal
 
@@ -59,7 +59,7 @@ parallel-cli auth --json
 
 Inspect `authenticated`, `method`, `env_var_set` and `has_stored_credentials`. Exit zero alone is not success: this command also exits zero with `authenticated: false`. Authentication status reports available credentials; it does not validate API access, credit or account policy.
 
-If `authenticated` is false, tell the user to run `parallel-cli login` in their terminal or set `PARALLEL_API_KEY` in the environment inherited by Cursor. Never request or print credentials in chat.
+If `authenticated` is false, tell the user to run `parallel-cli login` in their terminal or set `PARALLEL_API_KEY` in the environment inherited by Cursor. Never read credential files, and never request or print credentials in chat.
 
 If `method` is `environment`, `PARALLEL_API_KEY` overrides stored login. Any `selected_org_id` or `selected_org_name` describes the inactive stored login, not the environment key's organization. Report that distinction. The environment key's billing organization must be verified independently before an account-specific or paid test; do not claim that it belongs to the stored organization. Do not switch accounts or remove overrides automatically.
 

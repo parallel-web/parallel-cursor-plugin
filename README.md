@@ -8,7 +8,9 @@ This source package bundles the unified Parallel MCP, six skills, nine commands 
 
 The bundled MCP offers web search, page extraction, Decisions, image search and specialized search. You can use these tools without installing the CLI or signing in. Ask in chat to search the web with Parallel, fetch a page with Parallel or check a claim with Parallel Decisions.
 
-The following skills and slash commands use the authenticated CLI.
+To sign in for `web_research` and higher rate limits, add `https://mcp.parallel.ai/mcp?login` in Cursor's MCP settings and turn off the bundled server. Signed-in calls are billed to your Parallel account. `parallel-cli login` doesn't sign in the MCP.
+
+Search and extraction use the MCP when it's available and fall back to the CLI. The other skills and slash commands use the authenticated CLI.
 
 | Capability | Skill | Command |
 | --- | --- | --- |

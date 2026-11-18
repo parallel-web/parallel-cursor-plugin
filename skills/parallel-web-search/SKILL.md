@@ -1,7 +1,7 @@
 ---
 name: parallel-web-search
-description: "CLI web search, the default for lookups, current information and research queries. Save retrieved sources as JSON and cite them. Only use parallel-deep-research when the user explicitly requests deep or exhaustive research."
-compatibility: Requires parallel-cli and internet access.
+description: "Web search, the default for lookups, current information and research queries. Cite retrieved sources. Only use parallel-deep-research when the user explicitly requests deep or exhaustive research."
+compatibility: Requires the Parallel MCP or parallel-cli, and internet access.
 allowed-tools: Bash(parallel-cli:*)
 metadata:
   author: parallel
@@ -10,6 +10,8 @@ metadata:
 # Web Search
 
 Search the web for: $ARGUMENTS
+
+If the Parallel MCP `web_search` tool is callable (its name may have a prefix), use it instead of the CLI steps below.
 
 ## Command
 
@@ -49,7 +51,7 @@ Check the exit status, returned API error and `warnings` before presenting resul
 
 ## Response format
 
-**CRITICAL: Every claim must have an inline citation.** Use markdown links like [Title](URL) pulling only from the JSON output. Never invent or guess URLs.
+**CRITICAL: Every claim must have an inline citation.** Use markdown links like [Title](URL) pulling only from the returned results. Never invent or guess URLs.
 
 Synthesize a response that:
 
@@ -70,7 +72,7 @@ This Sources section is mandatory. Do not omit it.
 
 Only include source dates that were returned or verified in the retrieved content. Leave the date out when unknown.
 
-After the Sources section, mention the output file path (`/tmp/$FILENAME.json`) so the user knows it's available for follow-up questions.
+If you used the CLI, mention the output file path after the Sources section (`/tmp/$FILENAME.json`) so the user knows it's available for follow-up questions.
 
 ## If the `parallel-cli` binary is not installed
 

@@ -1,7 +1,7 @@
 ---
 name: parallel-web-extract
-description: "CLI content extraction from one or more URLs, including webpages, articles and PDFs. Save JSON, preserve successful content and report per-URL failures."
-compatibility: Requires parallel-cli and internet access.
+description: "Content extraction from one or more URLs, including webpages, articles and PDFs. Preserve successful content and report per-URL failures."
+compatibility: Requires the Parallel MCP or parallel-cli, and internet access.
 allowed-tools: Bash(parallel-cli:*)
 metadata:
   author: parallel
@@ -10,6 +10,8 @@ metadata:
 # URL Extraction
 
 Extract content from: $ARGUMENTS
+
+If the Parallel MCP `web_fetch` tool is callable (its name may have a prefix), use it instead of the CLI steps below.
 
 ## Command
 
@@ -53,7 +55,7 @@ Use returned `full_content` for full-page requests; excerpts alone are selected 
 - Strip only obvious noise: nav menus, footers, ads
 - Preserve all facts, names, numbers, dates, quotes
 
-After the response, mention the output file path (`/tmp/$FILENAME.json`) so the user knows it's available for follow-up questions.
+If you used the CLI, mention the output file path after the response (`/tmp/$FILENAME.json`) so the user knows it's available for follow-up questions.
 
 For large content, keep the full verbatim text in the saved file and provide a brief labelled preview plus its path. Never silently truncate content while claiming it is the complete extraction.
 
