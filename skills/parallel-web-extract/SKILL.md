@@ -11,7 +11,9 @@ metadata:
 
 Extract content from: $ARGUMENTS
 
-If the Parallel MCP `web_fetch` tool is callable (its name may have a prefix), use it instead of the CLI steps below.
+Use `web_fetch` from the `parallel` MCP bundled with the Parallel plugin. Cursor may prefix its name. If the user configured a signed-in Parallel MCP as a replacement, use that server. Use the CLI steps below when the selected MCP tool is unavailable.
+
+If anonymous MCP returns a rate limit, report it and offer to retry later or use a signed-in Parallel MCP. If the user requests the CLI fallback, use the steps below.
 
 ## Command
 
@@ -61,7 +63,7 @@ For large content, keep the full verbatim text in the saved file and provide a b
 
 ## If the `parallel-cli` binary is not installed
 
-If the shell reports `command not found: parallel-cli`, stop and tell the user to run `/parallel-setup`, then retry their request. Do not substitute built-in search, another provider or an answer from memory.
+If the shell reports `command not found: parallel-cli`, tell the user to enable the bundled `parallel` server under Customize → MCPs, or run `/parallel-setup` and ask for CLI fallback setup. Do not substitute built-in search, another provider or an answer from memory.
 
 ### Command and authentication failures
 

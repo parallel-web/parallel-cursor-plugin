@@ -3,9 +3,17 @@ name: parallel-setup
 description: Check the Parallel MCP and set up the CLI
 ---
 
-# Parallel CLI Setup
+# Parallel Setup
 
-If Parallel MCP tools such as `web_search` are callable, search, fetch and Decisions are ready. If not, run `agent mcp enable parallel` in the terminal. If that fails or the tools still aren't callable, ask the user to enable the bundled `parallel` server in Cursor's MCP settings. Continue below only for CLI workflows: deep research, enrichment, FindAll or monitors.
+## Check the MCP
+
+Find the `parallel` server bundled with the Parallel plugin in the current session's MCP tools. Cursor may identify it as `plugin-parallel-parallel` or add a prefix to its tool names. Use the server's plugin source to distinguish it from the separate Parallel Search connector. If the user configured the signed-in Parallel MCP as a replacement, check that server instead.
+
+Report Search (`web_search`), Fetch (`web_fetch`), and Decisions (`web_decisions`) separately. Mark each tool available only if it is callable on the selected server. Tool availability is enough for this check.
+
+If the bundled server is missing or disabled, direct the user to Customize → MCPs → parallel. For a signed-in replacement, direct them to that server's settings to reconnect. If an enabled server is missing a tool, report which tool is missing and recheck after the user reconnects or opens a new chat.
+
+For MCP-only use, stop after this check. Continue below for deep research, enrichment, FindAll, monitors, or when the user asks to set up CLI fallback for search or extraction.
 
 ## Check the CLI in Cursor's terminal
 
