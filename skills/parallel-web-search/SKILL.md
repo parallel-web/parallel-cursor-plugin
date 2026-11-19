@@ -1,7 +1,7 @@
 ---
 name: parallel-web-search
-description: "CLI web search, the default for lookups, current information and research queries. Save retrieved sources as JSON and cite them. Only use parallel-deep-research when the user explicitly requests deep or exhaustive research."
-compatibility: Requires parallel-cli and internet access.
+description: "Web search, the default for lookups, current information and research queries. Cite retrieved sources. Only use parallel-deep-research when the user explicitly requests deep or exhaustive research."
+compatibility: Requires the Parallel MCP or parallel-cli, and internet access.
 allowed-tools: Bash(parallel-cli:*)
 metadata:
   author: parallel
@@ -10,6 +10,10 @@ metadata:
 # Web Search
 
 Search the web for: $ARGUMENTS
+
+Use `web_search` from the `parallel` MCP bundled with the Parallel plugin. Cursor may prefix its name. If the user configured a signed-in Parallel MCP as a replacement, use that server. Use the CLI steps below when the selected MCP tool is unavailable.
+
+If anonymous MCP returns a rate limit, report it and offer to retry later or use a signed-in Parallel MCP. If the user requests the CLI fallback, use the steps below.
 
 ## Command
 
@@ -49,7 +53,7 @@ Check the exit status, returned API error and `warnings` before presenting resul
 
 ## Response format
 
-**CRITICAL: Every claim must have an inline citation.** Use markdown links like [Title](URL) pulling only from the JSON output. Never invent or guess URLs.
+**CRITICAL: Every claim must have an inline citation.** Use markdown links like [Title](URL) pulling only from the returned results. Never invent or guess URLs.
 
 Synthesize a response that:
 
@@ -70,11 +74,11 @@ This Sources section is mandatory. Do not omit it.
 
 Only include source dates that were returned or verified in the retrieved content. Leave the date out when unknown.
 
-After the Sources section, mention the output file path (`/tmp/$FILENAME.json`) so the user knows it's available for follow-up questions.
+If you used the CLI, mention the output file path after the Sources section (`/tmp/$FILENAME.json`) so the user knows it's available for follow-up questions.
 
 ## If the `parallel-cli` binary is not installed
 
-If the shell reports `command not found: parallel-cli`, stop and tell the user to run `/parallel-setup`, then retry their request. Do not substitute built-in search, another provider or an answer from memory.
+If the shell reports `command not found: parallel-cli`, tell the user to enable the bundled `parallel` server under Customize → MCPs, or run `/parallel-setup` and ask for CLI fallback setup. Do not substitute built-in search, another provider or an answer from memory.
 
 ### Command and authentication failures
 

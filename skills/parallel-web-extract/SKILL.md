@@ -1,7 +1,7 @@
 ---
 name: parallel-web-extract
-description: "CLI content extraction from one or more URLs, including webpages, articles and PDFs. Save JSON, preserve successful content and report per-URL failures."
-compatibility: Requires parallel-cli and internet access.
+description: "Content extraction from one or more URLs, including webpages, articles and PDFs. Preserve successful content and report per-URL failures."
+compatibility: Requires the Parallel MCP or parallel-cli, and internet access.
 allowed-tools: Bash(parallel-cli:*)
 metadata:
   author: parallel
@@ -10,6 +10,10 @@ metadata:
 # URL Extraction
 
 Extract content from: $ARGUMENTS
+
+Use `web_fetch` from the `parallel` MCP bundled with the Parallel plugin. Cursor may prefix its name. If the user configured a signed-in Parallel MCP as a replacement, use that server. Use the CLI steps below when the selected MCP tool is unavailable.
+
+If anonymous MCP returns a rate limit, report it and offer to retry later or use a signed-in Parallel MCP. If the user requests the CLI fallback, use the steps below.
 
 ## Command
 
@@ -53,13 +57,13 @@ Use returned `full_content` for full-page requests; excerpts alone are selected 
 - Strip only obvious noise: nav menus, footers, ads
 - Preserve all facts, names, numbers, dates, quotes
 
-After the response, mention the output file path (`/tmp/$FILENAME.json`) so the user knows it's available for follow-up questions.
+If you used the CLI, mention the output file path after the response (`/tmp/$FILENAME.json`) so the user knows it's available for follow-up questions.
 
 For large content, keep the full verbatim text in the saved file and provide a brief labelled preview plus its path. Never silently truncate content while claiming it is the complete extraction.
 
 ## If the `parallel-cli` binary is not installed
 
-If the shell reports `command not found: parallel-cli`, stop and tell the user to run `/parallel-setup`, then retry their request. Do not substitute built-in search, another provider or an answer from memory.
+If the shell reports `command not found: parallel-cli`, tell the user to enable the bundled `parallel` server under Customize → MCPs, or run `/parallel-setup` and ask for CLI fallback setup. Do not substitute built-in search, another provider or an answer from memory.
 
 ### Command and authentication failures
 

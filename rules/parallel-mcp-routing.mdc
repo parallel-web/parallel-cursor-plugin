@@ -1,0 +1,8 @@
+---
+description: Route web searches and page reads to the bundled Parallel MCP.
+alwaysApply: true
+---
+
+When a request calls for web search or reading a URL, use the Parallel plugin's bundled `parallel` MCP (`web_search` or `web_fetch`) when available, including for `/parallel-search` and `/parallel-extract`. Cursor may show the server as `plugin-parallel-parallel`. Prefer it over the separate Parallel Search connector and CLI-only copies of Parallel skills. Honor a user's explicit provider choice or signed-in Parallel MCP replacement. On an anonymous rate limit, report it and offer to retry later or use signed-in Parallel MCP.
+
+For `/parallel-setup`, check Search, Fetch, and Decisions separately on that server. If the bundled server is disabled, direct the user to Customize → MCPs → parallel. Apply this check even when Cursor loads a CLI-only copy of `/parallel-setup`. Use the CLI setup steps only when the user needs a CLI workflow or explicitly asks for CLI fallback.

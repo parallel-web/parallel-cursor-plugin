@@ -1,8 +1,8 @@
 {
   "name": "parallel",
   "displayName": "Parallel",
-  "version": "0.2.1",
-  "description": "Web search, content extraction, deep research, data enrichment, entity discovery (FindAll), and web monitoring — powered by parallel-cli.",
+  "version": "0.3.0",
+  "description": "Web search, page extraction, and Decisions with Parallel MCP. Includes CLI workflows for deep research, data enrichment, entity discovery, and web monitoring.",
   "author": {
     "name": "Parallel Web Systems",
     "email": "support@parallel.ai"

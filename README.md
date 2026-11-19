@@ -1,10 +1,16 @@
 # Parallel Cursor Plugin
 
-Web search, content extraction, deep research, data enrichment, entity discovery and web monitoring powered by [parallel-cli](https://docs.parallel.ai/integrations/cli).
+Use the [Parallel MCP](https://docs.parallel.ai/integrations/mcp/quickstart) for web search, page extraction and Decisions. The plugin also includes [Parallel CLI](https://docs.parallel.ai/integrations/cli) workflows for deep research, enrichment, entity discovery and monitoring.
 
 ## Features
 
-This source package contains six skills, nine commands and one citation rule. Cursor's official marketplace reviews updates separately from GitHub changes, so the installed listing may contain an earlier revision. Check the listing and installed version before assuming source features have shipped.
+This source package bundles the unified Parallel MCP, six skills, nine commands, and rules for web tool routing and citations. Cursor reviews Marketplace updates separately from GitHub changes. Check the installed version to see which features are available.
+
+The bundled MCP offers web search, page extraction, Decisions, image search and specialized search. You can use these tools without installing the CLI or signing in. Ask in chat to search the web with Parallel, fetch a page with Parallel or check a claim with Parallel Decisions.
+
+To sign in for `web_research` and higher rate limits, add `https://mcp.parallel.ai/mcp?login` in Cursor's MCP settings and turn off the bundled server. Signed-in calls are billed to your Parallel account. `parallel-cli login` doesn't sign in the MCP.
+
+Search and extraction prefer the bundled MCP and fall back to the CLI when the MCP tool is unavailable. If you hit the anonymous rate limit, retry later or follow the signed-in MCP setup above. Deep research, enrichment, FindAll and monitoring use the authenticated CLI.
 
 | Capability | Skill | Command |
 | --- | --- | --- |
@@ -17,12 +23,13 @@ This source package contains six skills, nine commands and one citation rule. Cu
 
 Additional commands: `/parallel-setup`, `/parallel-status <run_id>` and `/parallel-result <run_id>`. Status and result are for research tasks only.
 
-The package uses the authenticated CLI and does not bundle an MCP server. Ordinary lookups use Search with its default `basic` mode. Deep research requires an explicit request. FindAll discovers entities; enrichment adds fields to an existing list. Monitors persist until cancelled and can incur charges on scheduled or triggered executions.
+CLI lookups use Search with its default `basic` mode. Deep research requires an explicit request. FindAll discovers entities, and enrichment adds fields to an existing list. Monitors persist until cancelled and can incur charges on scheduled or triggered executions.
 
 ## Installation
 
 1. Install **Parallel** from Cursor's marketplace.
-2. Run `/parallel-setup` in Cursor to check CLI installation, feature support and authentication.
+2. Enable the bundled Parallel MCP if Cursor prompts you to, then ask for a search in chat.
+3. Run `/parallel-setup` in Cursor to check whether Search, Fetch and Decisions are available. If you need an authenticated CLI workflow or want CLI fallback, ask for it when running setup.
 
 For manual setup, prefer pipx:
 
@@ -64,9 +71,9 @@ Follow [Cursor's plugin documentation](https://cursor.com/docs/plugins) and [man
 
 1. Clone this repository.
 2. Confirm `~/.cursor/plugins/local/parallel` is absent before copying. If it exists, inspect its ownership and contents rather than overwriting it.
-3. Copy the real package directory under that path, including `.cursor-plugin/plugin.json`, `skills`, `commands` and `rules`. Exclude `.git` and planning artifacts. Symlinks outside the local plugin directory are skipped.
-4. Reload the disposable Cursor window. Inspect Customize for package origin, all six skills, nine commands and citation rule at the intended user or project scope.
-5. Check that slash commands invoke their corresponding skills. Then use `/parallel-setup` to verify the terminal's CLI and credential source before an authorized capability test.
+3. Copy the real package directory under that path, including `.cursor-plugin/plugin.json`, `mcp.json`, `skills`, `commands` and `rules`. Exclude `.git` and planning artifacts. Symlinks outside the local plugin directory are skipped.
+4. Reload the disposable Cursor window. Inspect Customize for the package origin, bundled MCP server, six skills, nine commands and two rules at the intended user or project scope.
+5. Ask to search the web without naming a provider and confirm Cursor calls the bundled server. Repeat with the separate Parallel Search connector enabled if available. Check page extraction, Decisions and the slash commands. Run `/parallel-setup` with the bundled server enabled and disabled, and verify that readiness matches the tools available on that server.
 
 A same-name marketplace plugin takes precedence over the local copy. Test with that conflict absent only in the disposable environment. Enterprise policy can block local imports; do not change policy to force a test. Opening this repository or adding project-command symlinks does not prove plugin loading.
 
@@ -76,9 +83,10 @@ Verify each intended consumer independently, including the IDE, Agents Window an
 
 ```text
 .cursor-plugin/plugin.json   Plugin manifest
+mcp.json                     Unified Parallel MCP
 skills/                      6 capability skills
 commands/                    9 slash commands
-rules/                       1 citation standards rule
+rules/                       Web tool routing and citation standards
 ```
 
 ## License
